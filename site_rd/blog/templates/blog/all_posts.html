@@ -8,5 +8,14 @@
 </head>
 <body>
     <h1>Hello World</h1>
+
+    <section>
+        {%for post in posts%}
+            <article>
+                <h2> {{ post.title }} </h2>
+                <p> {{ post.text }} </p>
+            </article>
+        {%endfor%}
+    </section>
 </body>
 </html>
