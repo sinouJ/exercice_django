@@ -1,35 +1,24 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All posts</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <h1 class="text-center">Hello World</h1>
+{% extends 'blog/base.html' %}
 
-    <section class="container">
-        {%for post in posts%}
-            <div class="card" style="width: 18rem;">
-                <img src="https://i.picsum.photos/id/271/200/200.jpg?hmac=ZEj4e_twCOPm3eoBeBMIKpcbFcD7s8TwRPMuyhLmqPk" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title"> {{post.title}} </h5>
-                    <p class="card-text">{{post.text}}</p>
-                    <p class="card-text">
-                        {%for user in users%}
-                            {% if user.id == post.author_id %}
-                                {{user.username}}
-                            {% endif %}
-                        {%endfor%}
-                    </p>
-                </div>
+{% block content %}
+<section class="container">
+    {%for post in posts%}
+        <div class="card" style="width: 18rem;">
+            <img src="https://i.picsum.photos/id/271/200/200.jpg?hmac=ZEj4e_twCOPm3eoBeBMIKpcbFcD7s8TwRPMuyhLmqPk" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'post_view' id=post.id %}">{{post.title}}</a>
+                </h5>
+                <p class="card-text">{{post.text}}</p>
+                <p class="card-text">
+                    {%for user in users%}
+                        {% if user.id == post.author_id %}
+                            {{user.username}}
+                        {% endif %}
+                    {%endfor%}
+                </p>
             </div>
-        {%endfor%}
-    </section>
-</body>
-</html>
+        </div>
+    {%endfor%}
+</section>
+{% endblock %}
