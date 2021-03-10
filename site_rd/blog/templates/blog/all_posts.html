@@ -20,6 +20,13 @@
                 <div class="card-body">
                     <h5 class="card-title"> {{post.title}} </h5>
                     <p class="card-text">{{post.text}}</p>
+                    <p class="card-text">
+                        {%for user in users%}
+                            {% if user.id == post.author_id %}
+                                {{user.username}}
+                            {% endif %}
+                        {%endfor%}
+                    </p>
                 </div>
             </div>
         {%endfor%}
