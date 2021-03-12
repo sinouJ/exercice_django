@@ -6,5 +6,6 @@
     <p>{{post.text}}</p>
     <i>created: {{post.created_date}}</i><br>
     <i>published: {{post.published_date}}</i>
+    <a href="{% url 'post_edit' id=post.id%}">Éditer le post <i class="bi-pencil-fill"></i></a>
 </div>
 {% endblock %}

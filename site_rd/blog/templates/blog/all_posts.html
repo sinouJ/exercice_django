@@ -2,23 +2,56 @@
 
 {% block content %}
 <section class="container">
+    <h2>Derniers posts</h2>
     {%for post in posts%}
-        <div class="card" style="width: 18rem;">
-            <img src="https://i.picsum.photos/id/271/200/200.jpg?hmac=ZEj4e_twCOPm3eoBeBMIKpcbFcD7s8TwRPMuyhLmqPk" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <a href="{% url 'post_view' id=post.id %}">{{post.title}}</a>
-                </h5>
-                <p class="card-text">{{post.text}}</p>
-                <p class="card-text">
-                    {%for user in users%}
-                        {% if user.id == post.author_id %}
-                            {{user.username}}
-                        {% endif %}
-                    {%endfor%}
-                </p>
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <img src="https://i.picsum.photos/id/271/200/200.jpg?hmac=ZEj4e_twCOPm3eoBeBMIKpcbFcD7s8TwRPMuyhLmqPk" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'post_view' id=post.id %}">{{post.title}}</a>
+                    </h5>
+                    <p class="card-text">{{post.text}}</p>
+                    <p class="card-text">
+                        {%for user in users%}
+                            {% if user.id == post.author_id %}
+                                {{user.username}}
+                            {% endif %}
+                        {%endfor%}
+                    </p>
+                </div>
             </div>
         </div>
+    </div>
     {%endfor%}
+    {% if user.is_staff == True %}
+        <h2>Posts non publiés</h2>
+        <div class="row">
+            {%for post in unpublished_posts%}
+            <div class="col-4">
+                <div class="card">
+                    <img src="https://i.picsum.photos/id/271/200/200.jpg?hmac=ZEj4e_twCOPm3eoBeBMIKpcbFcD7s8TwRPMuyhLmqPk" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'post_view' id=post.id %}">{{post.title}}</a>
+                        </h5>
+                        <p class="card-text">{{post.text}}</p>
+                        <p class="card-text">
+                            {%for user in users%}
+                                {% if user.id == post.author_id %}
+                                    {{user.username}}
+                                {% endif %}
+                            {%endfor%}
+                        </p>
+                        <p class="float-end">
+                            <i>non publié</i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {%endfor%}
+        </div>
+    {% endif %}
 </section>
 {% endblock %}
