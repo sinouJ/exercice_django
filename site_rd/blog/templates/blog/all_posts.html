@@ -2,55 +2,61 @@
 
 {% block content %}
 <section class="container">
-    <h2>Derniers posts</h2>
-    {%for post in posts%}
-    <div class="row">
-        <div class="col-4">
-            <div class="card">
-                <img src="https://i.picsum.photos/id/271/200/200.jpg?hmac=ZEj4e_twCOPm3eoBeBMIKpcbFcD7s8TwRPMuyhLmqPk" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="{% url 'post_view' id=post.id %}">{{post.title}}</a>
-                    </h5>
-                    <p class="card-text">{{post.text}}</p>
-                    <p class="card-text">
-                        {%for user in users%}
-                            {% if user.id == post.author_id %}
-                                {{user.username}}
+    {% if posts %}
+        <h2>Derniers posts</h2>
+        <div class="row">
+            {%for post in posts%}
+                <div class="col-4">
+                    <div class="card">
+                        <img src="https://i.picsum.photos/id/271/200/200.jpg?hmac=ZEj4e_twCOPm3eoBeBMIKpcbFcD7s8TwRPMuyhLmqPk" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'post_view' id=post.id %}">{{post.title}}</a>
+                            </h5>
+                            <p class="card-text">{{post.text}}</p>
+                            <p class="card-text">
+                                {%for user in users%}
+                                    {% if user.id == post.author_id %}
+                                        {{user.username}}
+                                    {% endif %}
+                                {%endfor%}
+                            </p>
+                            {% if user.is_staff %}
+                                <a class="btn btn-danger" href="{% url 'archive_post' id=post.id %}">Archiver post</a>
                             {% endif %}
-                        {%endfor%}
-                    </p>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {%endfor%}
         </div>
-    </div>
-    {%endfor%}
-    {% if user.is_staff == True %}
+    {% endif %}
+    {% if user.is_staff %}
         <h2>Posts non publiés</h2>
         <div class="row">
             {%for post in unpublished_posts%}
-            <div class="col-4">
-                <div class="card">
-                    <img src="https://i.picsum.photos/id/271/200/200.jpg?hmac=ZEj4e_twCOPm3eoBeBMIKpcbFcD7s8TwRPMuyhLmqPk" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <a href="{% url 'post_view' id=post.id %}">{{post.title}}</a>
-                        </h5>
-                        <p class="card-text">{{post.text}}</p>
-                        <p class="card-text">
-                            {%for user in users%}
-                                {% if user.id == post.author_id %}
-                                    {{user.username}}
-                                {% endif %}
-                            {%endfor%}
-                        </p>
-                        <p class="float-end">
-                            <i>non publié</i>
-                        </p>
+                <div class="col-4">
+                    <div class="card">
+                        <img src="https://i.picsum.photos/id/271/200/200.jpg?hmac=ZEj4e_twCOPm3eoBeBMIKpcbFcD7s8TwRPMuyhLmqPk" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'post_view' id=post.id %}">{{post.title}}</a>
+                            </h5>
+                            <p class="card-text">{{post.text}}</p>
+                            <p class="card-text">
+                                {%for user in users%}
+                                    {% if user.id == post.author_id %}
+                                        {{user.username}}
+                                    {% endif %}
+                                {%endfor%}
+                            </p>
+                            <p class="float-end">
+                                <i>non publié</i>
+                            </p>
+                            <a class="btn btn-primary" href="{% url 'publish_post' id=post.id %}">Publier post</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {%endfor%}
+            {%endfor%}
         </div>
     {% endif %}
 </section>

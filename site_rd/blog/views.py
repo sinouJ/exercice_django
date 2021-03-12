@@ -3,6 +3,7 @@ from .models import Post
 from django.contrib.auth.models import User
 from .forms import PostForm
 from django.shortcuts import redirect, get_object_or_404
+from django.utils import timezone
 
 def all_posts(request):
     page_title = 'Derniers posts | Home'
@@ -21,7 +22,7 @@ def all_posts(request):
     )
 
 def post_view(request, id):
-    post = Post.objects.get(id = id)
+    post = get_object_or_404(Post, id = id)
     page_title = post.title + ' | Post'
     return render(request, 'blog/post_view.html', {'post': post, 'page_title': page_title})
 
@@ -58,5 +59,22 @@ def post_edit(request, id):
             return redirect('post_view', id=post.id)
 
     else:
-        form = PostForm()
+        form = PostForm(instance = post)
         return render(request, 'blog/post_new.html', {'form': form, 'page_title': page_title})
+
+def publish_post(request, id):
+    post = get_object_or_404(Post, id = id)
+
+    post.is_published = True
+    post.published_date = timezone.now()
+    post.save()
+
+    return redirect('all_posts')
+
+def archive_post(request, id):
+    post = get_object_or_404(Post, id = id)
+
+    post.is_published = False
+    post.save()
+
+    return redirect('all_posts')
