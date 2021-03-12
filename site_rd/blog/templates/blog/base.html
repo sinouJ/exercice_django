@@ -12,6 +12,9 @@
 </head>
 <body>
     <h1 class="text-center"><a href="{% url 'all_posts' %}">Hello World</a></h1>
+    <h3>
+        <a href="{% url 'post_new' %}" class="text-center">Create post</a>
+    </h3>
 
     {% block content %}
     {% endblock %}
