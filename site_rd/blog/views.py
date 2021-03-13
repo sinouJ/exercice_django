@@ -1,9 +1,14 @@
+# Django imports
 from django.shortcuts import render
-from .models import Post
 from django.contrib.auth.models import User
-from .forms import PostForm
 from django.shortcuts import redirect, get_object_or_404
 from django.utils import timezone
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import logout, authenticate, login
+
+# Post imports
+from .models import Post
+from .forms import PostForm
 
 def all_posts(request):
     page_title = 'Derniers posts | Home'
@@ -78,3 +83,42 @@ def archive_post(request, id):
     post.save()
 
     return redirect('all_posts')
+
+def user_signup(request):
+    page_title = 'Inscription'
+
+    if(request.method == 'POST'):
+        form = UserCreationForm(request.POST)
+
+        if(form.is_valid()):
+            form.save()
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'blog/user_signup.html', {'form': form})
+
+def user_logout(request):
+    logout(request)
+
+    return redirect('all_posts')
+
+def user_login(request):
+
+    if(request.method == 'POST'):
+        form = AuthenticationForm(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('all_posts')
+        
+        else:
+            return 'TODO error log message'
+
+    else: 
+        form = AuthenticationForm()
+
+    return render(request, 'blog/user_login.html', {'form': form})

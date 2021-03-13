@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{form}}
+        <br>
+        <button class="btn btn-primary" type="submit">Inscription</button>
+    </form>
+{% endblock %}
